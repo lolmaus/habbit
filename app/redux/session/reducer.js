@@ -1,5 +1,5 @@
 import runReducer    from 'habbit/redux/_utils/run-reducer';
-import sessionInitialState from './initial-state';
+import initialState from './initial-state';
 
 
 
@@ -31,6 +31,6 @@ const subreducers = {
 
 
 
-export default function tasksReducer (sessionState = sessionInitialState, action) {
+export default function tasksReducer (sessionState = initialState, action) {
   return runReducer(subreducers, sessionState, action);
 }

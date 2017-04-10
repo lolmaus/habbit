@@ -1,8 +1,8 @@
-{{log-in
-  session = redux.state.session
+Task list
 
-  authenticateSessionAction = (action (route-action 'authenticateSession'))
-  invalidateSessionAction   = (action (route-action 'invalidateSession'))
+{{task-list
+  tasks = (get redux.state 'tasks')
+
+  updateTaskTitleAtIndexAction = (action redux.dispatch 'UPDATE_TASK_TITLE_AT_INDEX')
+  deleteTaskAction             = (action redux.dispatch 'DELETE_TASK')
 }}
-
-{{link-to 'foo' 'foo'}}

@@ -1,7 +1,7 @@
 import runReducer    from 'habbit/redux/_utils/run-reducer';
 import deleteAtIndex from 'habbit/utils/delete-at-index';
 
-import tasksInitialState from './initial-state';
+import initialState from './initial-state';
 
 
 
@@ -35,6 +35,6 @@ const subreducers = {
 
 
 
-export default function tasksReducer (tasks = tasksInitialState, action) {
+export default function tasksReducer (tasks = initialState, action) {
   return runReducer(subreducers, tasks, action);
 }
