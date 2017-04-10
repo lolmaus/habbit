@@ -1,0 +1,19 @@
+<ul>
+  {{#each tasks key="slug" as |task taskIndex|}}
+    <li>
+      {{task.title}}
+
+      {{one-way-input
+        value = task.title
+        update = (action updateTaskTitleAtIndexAction taskIndex)
+      }}
+
+      <a
+        href
+        {{action deleteTaskAction taskIndex}}
+      >
+        ×
+      </a>
+    </li>
+  {{/each}}
+</ul>

@@ -1,11 +1,23 @@
 /* eslint-env node */
+const _ = require('lodash')
+
+const envVars = _.pick(process.env, [
+  'HB_DEPLOY_TARGET',
+  'HB_GITHUB_CLIENT_ID',
+  'HB_GATEKEEPER_URL',
+])
+
+
 
 module.exports = function(environment) {
-  var ENV = {
+  const ENV = {
     modulePrefix: 'habbit',
+    podModulePrefix: 'habbit/pods',
     environment: environment,
     rootURL: '/',
     locationType: 'auto',
+    envVars,
+
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -20,7 +32,17 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    }
+    },
+
+    torii: {
+      providers: {
+        'github-oauth2': {
+          apiKey:      envVars.HB_GITHUB_CLIENT_ID,
+          // redirectUri: overridden in provider's `redirectUri` method
+          scope:       'public_repo',
+        }
+      }
+    },
   };
 
   if (environment === 'development') {

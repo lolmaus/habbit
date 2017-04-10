@@ -1,9 +1,38 @@
 /* eslint-env node */
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const Funnel   = require('broccoli-funnel');
+const fs       = require('fs')
+
+
+
+const environment   = process.env.EMBER_ENV || 'development'
+const defaultTarget = environment === 'production' ? 'prod' : 'localhost-4200'
+const target        = process.env.HB_DEPLOY_TARGET || defaultTarget
+const dotEnvFile    = `./.env-${target}`
+if (!fs.existsSync(dotEnvFile)) throw new Error(`ember-cli-build.js: dot-env file not found: ${dotEnvFile}`)
+
+
 
 module.exports = function(defaults) {
-  var app = new EmberApp(defaults, {
+  const app = new EmberApp(defaults, {
     // Add options here
+    nodeModulesToVendor: [
+      new Funnel('node_modules/lodash', {
+        destDir: 'lodash'
+      }),
+      new Funnel('node_modules/redux/dist', {
+        destDir: 'redux'
+      }),
+    ],
+
+    dotEnv: {
+      clientAllowedKeys: [
+        'HB_DEPLOY_TARGET',
+        'HB_GITHUB_CLIENT_ID',
+        'HB_GATEKEEPER_URL',
+      ],
+      path: dotEnvFile
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated
@@ -18,6 +47,8 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
+  app.import('vendor/lodash/lodash.js');
+  app.import('vendor/redux/redux.js');
 
   return app.toTree();
 };
